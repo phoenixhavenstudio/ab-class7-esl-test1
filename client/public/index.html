@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alberta Class 7 – ESL Practice Test #1</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <div class="header-content">
+            <div class="studio-name">Phoenix Haven Studio</div>
+            <h1>2026 Alberta Class 7 – ESL Practice Test #1</h1>
+        </div>
+    </header>
+
+    <main>
+        <!-- Start Screen -->
+        <div id="start-screen" class="screen active">
+            <div class="card">
+                <h2>Welcome to the Practice Test</h2>
+                <p>This test consists of 30 multiple-choice questions.</p>
+                <p>You need 25 correct answers to pass.</p>
+                
+                <div class="options">
+                    <label class="checkbox-container">
+                        <input type="checkbox" id="shuffle-checkbox">
+                        <span class="checkmark"></span>
+                        Shuffle Questions
+                    </label>
+                </div>
+
+                <button id="start-btn" class="primary-btn">Start Test</button>
+            </div>
+        </div>
+
+        <!-- Quiz Screen -->
+        <div id="quiz-screen" class="screen">
+            <div class="progress-bar-container">
+                <div class="progress-text">Question <span id="current-question-num">1</span> of <span id="total-questions">30</span></div>
+                <div class="progress-bar">
+                    <div id="progress-fill" class="progress-fill"></div>
+                </div>
+            </div>
+
+            <div class="card question-card">
+                <h2 id="question-text">Question goes here...</h2>
+                <div id="choices-container" class="choices">
+                    <!-- Choices will be injected here -->
+                </div>
+            </div>
+
+            <!-- Feedback Section (Explanation) -->
+            <div id="feedback-container" class="card feedback hidden">
+                <h3 id="feedback-title"></h3>
+                <p id="feedback-explanation"></p>
+                <div class="esl-note">
+                    <strong>ESL Note:</strong> <span id="feedback-esl"></span>
+                </div>
+            </div>
+
+            <div class="controls">
+                <button id="back-btn" class="secondary-btn" disabled>Back</button>
+                <button id="next-btn" class="primary-btn" disabled>Next</button>
+            </div>
+        </div>
+
+        <!-- Result Screen -->
+        <div id="result-screen" class="screen">
+            <div class="card result-card">
+                <h2 id="pass-fail-text">PASS</h2>
+                <div class="score-circle">
+                    <span id="score-text">26/30</span>
+                    <span id="percentage-text">86%</span>
+                </div>
+                <p id="result-message"></p>
+                
+                <div class="result-actions">
+                    <button id="review-btn" class="secondary-btn">Review Wrong Answers</button>
+                    <button id="restart-btn" class="primary-btn">Restart Test</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Review Screen -->
+        <div id="review-screen" class="screen">
+            <div class="review-header">
+                <h2>Review Wrong Answers</h2>
+                <button id="close-review-btn" class="secondary-btn">Close Review</button>
+            </div>
+            <div id="review-list" class="review-list">
+                <!-- Wrong answers injected here -->
+            </div>
+        </div>
+
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

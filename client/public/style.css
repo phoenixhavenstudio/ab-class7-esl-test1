@@ -1,0 +1,367 @@
+:root {
+    --deep-blue: #0a2540;
+    --subtle-yellow: #f9eeb5;
+    --white: #ffffff;
+    --gray-light: #f4f6f8;
+    --gray-medium: #e0e6eb;
+    --text-dark: #333333;
+    --text-light: #666666;
+    --success: #28a745;
+    --error: #dc3545;
+    --primary-btn: #0056b3;
+    --primary-btn-hover: #004494;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: var(--gray-light);
+    color: var(--text-dark);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Header */
+header {
+    background-color: var(--deep-blue);
+    color: var(--white);
+    padding: 1rem;
+    text-align: center;
+    border-bottom: 4px solid var(--subtle-yellow);
+}
+
+.header-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.studio-name {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    opacity: 0.8;
+    margin-bottom: 0.5rem;
+}
+
+h1 {
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+/* Main Content */
+main {
+    flex: 1;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+/* Screens */
+.screen {
+    display: none;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.screen.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Cards */
+.card {
+    background: var(--white);
+    border-radius: 8px;
+    padding: 2rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    margin-bottom: 1.5rem;
+}
+
+/* Start Screen */
+#start-screen {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.options {
+    margin: 2rem 0;
+}
+
+.checkbox-container {
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    font-size: 1.1rem;
+    user-select: none;
+}
+
+.checkbox-container input {
+    margin-right: 0.5rem;
+    width: 18px;
+    height: 18px;
+}
+
+/* Progress Bar */
+.progress-bar-container {
+    margin-bottom: 1.5rem;
+}
+
+.progress-text {
+    text-align: right;
+    font-size: 0.9rem;
+    color: var(--text-light);
+    margin-bottom: 0.5rem;
+}
+
+.progress-bar {
+    height: 8px;
+    background-color: var(--gray-medium);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background-color: var(--primary-btn);
+    width: 0%;
+    transition: width 0.3s ease;
+}
+
+/* Questions & Choices */
+.question-card h2 {
+    margin-bottom: 1.5rem;
+    font-size: 1.3rem;
+    line-height: 1.4;
+}
+
+.choices {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.choice-btn {
+    background: var(--white);
+    border: 2px solid var(--gray-medium);
+    border-radius: 6px;
+    padding: 1rem;
+    text-align: left;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+}
+
+.choice-btn:hover:not(:disabled) {
+    border-color: var(--primary-btn);
+    background-color: #f0f7ff;
+}
+
+.choice-btn.selected {
+    border-color: var(--primary-btn);
+    background-color: #e6f0ff;
+    font-weight: 600;
+}
+
+.choice-btn.correct {
+    border-color: var(--success);
+    background-color: #e6ffea;
+    color: #155724;
+}
+
+.choice-btn.incorrect {
+    border-color: var(--error);
+    background-color: #ffe6e6;
+    color: #721c24;
+}
+
+.choice-label {
+    font-weight: bold;
+    margin-right: 1rem;
+    min-width: 25px;
+}
+
+/* Feedback */
+.feedback {
+    border-left: 5px solid var(--subtle-yellow);
+    background-color: #fffff0;
+}
+
+.feedback.correct {
+    border-left-color: var(--success);
+    background-color: #f0fff4;
+}
+
+.feedback.incorrect {
+    border-left-color: var(--error);
+    background-color: #fff5f5;
+}
+
+.feedback h3 {
+    margin-bottom: 0.5rem;
+}
+
+.esl-note {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(0,0,0,0.1);
+    font-style: italic;
+    color: var(--text-light);
+}
+
+.hidden {
+    display: none;
+}
+
+/* Controls */
+.controls {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 2rem;
+}
+
+button {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.primary-btn {
+    background-color: var(--primary-btn);
+    color: var(--white);
+}
+
+.primary-btn:hover:not(:disabled) {
+    background-color: var(--primary-btn-hover);
+}
+
+.secondary-btn {
+    background-color: var(--gray-medium);
+    color: var(--text-dark);
+}
+
+.secondary-btn:hover:not(:disabled) {
+    background-color: #d0d7dd;
+}
+
+/* Result Screen */
+.result-card {
+    text-align: center;
+}
+
+.score-circle {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background: var(--gray-light);
+    margin: 2rem auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 5px solid var(--primary-btn);
+}
+
+.score-circle.pass {
+    border-color: var(--success);
+    color: var(--success);
+}
+
+.score-circle.fail {
+    border-color: var(--error);
+    color: var(--error);
+}
+
+#score-text {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--text-dark);
+}
+
+#percentage-text {
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+#pass-fail-text {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.pass-text { color: var(--success); }
+.fail-text { color: var(--error); }
+
+.result-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+/* Review Screen */
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.review-item {
+    background: var(--white);
+    border: 1px solid var(--gray-medium);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.review-q {
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.review-detail {
+    margin: 0.25rem 0;
+}
+
+.review-correct { color: var(--success); font-weight: bold; }
+.review-wrong { color: var(--error); text-decoration: line-through; }
+.review-explanation { margin-top: 0.5rem; color: var(--text-light); font-size: 0.95rem; }
+
+/* Mobile Responsive */
+@media (max-width: 600px) {
+    .controls {
+        flex-direction: column-reverse;
+        gap: 1rem;
+    }
+    
+    button {
+        width: 100%;
+    }
+
+    .result-actions {
+        flex-direction: column;
+    }
+
+    h1 {
+        font-size: 1.2rem;
+    }
+}
