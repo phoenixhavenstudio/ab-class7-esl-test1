@@ -4,6 +4,7 @@ import path from "path";
 import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";
 
 export default defineConfig({
+  base: "/ab-class7-esl-test1",
   plugins: [
     react(),
     runtimeErrorOverlay(),
