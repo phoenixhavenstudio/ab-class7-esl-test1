@@ -262,8 +262,13 @@ const btns = {
     back: document.getElementById('back-btn'),
     review: document.getElementById('review-btn'),
     restart: document.getElementById('restart-btn'),
+    restartQuiz: document.getElementById('restart-quiz-btn'),
+    restartConfirm: document.getElementById('restart-confirm-btn'),
+    restartCancel: document.getElementById('restart-cancel-btn'),
     closeReview: document.getElementById('close-review-btn')
 };
+
+const restartModal = document.getElementById('restart-modal');
 
 const els = {
     questionText: document.getElementById('question-text'),
@@ -288,7 +293,20 @@ const els = {
 btns.start.addEventListener('click', startQuiz);
 btns.next.addEventListener('click', nextQuestion);
 btns.back.addEventListener('click', prevQuestion);
-btns.restart.addEventListener('click', resetQuiz);
+btns.restart.addEventListener('click', () => {
+    resetTest();
+    startQuiz();
+});
+btns.restartQuiz.addEventListener('click', () => restartModal.classList.remove('hidden'));
+btns.restartCancel.addEventListener('click', () => restartModal.classList.add('hidden'));
+restartModal.addEventListener('click', (e) => {
+    if (e.target === restartModal) restartModal.classList.add('hidden');
+});
+btns.restartConfirm.addEventListener('click', () => {
+    restartModal.classList.add('hidden');
+    resetTest();
+    startQuiz();
+});
 btns.review.addEventListener('click', showReview);
 btns.closeReview.addEventListener('click', hideReview);
 
@@ -495,6 +513,13 @@ function hideReview() {
     showScreen('result');
 }
 
-function resetQuiz() {
-    showScreen('start');
+function resetTest() {
+    currentQuestionIndex = 0;
+    score = 0;
+    userAnswers = [];
+    isAnswered = false;
+    currentQuestions = [...QUESTIONS];
+    els.progressFill.style.width = '0%';
+    els.feedbackContainer.classList.add('hidden');
+    restartModal.classList.add('hidden');
 }

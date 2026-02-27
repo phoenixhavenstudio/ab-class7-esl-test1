@@ -61,8 +61,22 @@
             </div>
 
             <div class="controls">
-                <button id="back-btn" class="secondary-btn" disabled>Back</button>
+                <div class="controls-left">
+                    <button id="restart-quiz-btn" class="secondary-btn">Restart</button>
+                    <button id="back-btn" class="secondary-btn" disabled>Back</button>
+                </div>
                 <button id="next-btn" class="primary-btn" disabled>Next</button>
+            </div>
+
+            <div id="restart-modal" class="modal-overlay hidden">
+                <div class="modal-card">
+                    <h3>Restart the test?</h3>
+                    <p>Your current progress will be lost.</p>
+                    <div class="modal-actions">
+                        <button id="restart-cancel-btn" class="secondary-btn">Cancel</button>
+                        <button id="restart-confirm-btn" class="primary-btn">Restart</button>
+                    </div>
+                </div>
             </div>
         </div>
 
