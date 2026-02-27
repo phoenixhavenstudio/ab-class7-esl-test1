@@ -1,6 +1,6 @@
 # Project Title
 
-This is a new repository.
+This is an interactive test with 30 multiple choice questions.
 
 ## Description
 A brief description of what this project does and who it's for.
