@@ -1,0 +1,9 @@
+{
+  "name": "ab-class7-esl-test1-client",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "build": "node ../node_modules/vite/bin/vite.js build"
+  }
+}
