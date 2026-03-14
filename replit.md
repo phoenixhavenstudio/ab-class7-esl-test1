@@ -9,7 +9,7 @@ A web-based interactive quiz to help ESL learners prepare for the Alberta Class 
 - **Dev tooling**: tsx, Vite, TypeScript
 
 ## Project Structure
-- `server/index.ts` - Express server entry point (port 5000)
+- `server/index.ts` - Express server entry point (default port 5000, configurable via `PORT` env var)
 - `client/public/index.html` - Main HTML page
 - `client/public/script.js` - Quiz logic, question bank, UI interactions
 - `client/public/style.css` - All styling
