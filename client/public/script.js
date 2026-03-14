@@ -265,7 +265,7 @@ const btns = {
     restartQuiz: document.getElementById('restart-quiz-btn'),
     restartConfirm: document.getElementById('restart-confirm-btn'),
     restartCancel: document.getElementById('restart-cancel-btn'),
-    closeReview: document.getElementById('close-review-btn')
+    closeReview: document.getElementById('back-to-results-btn')
 };
 
 const restartModal = document.getElementById('restart-modal');
@@ -317,6 +317,16 @@ function showScreen(screenName) {
     screens[screenName].classList.add('active');
 }
 
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const randomBuffer = new Uint32Array(1);
+        window.crypto.getRandomValues(randomBuffer);
+        const j = randomBuffer[0] % (i + 1);
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+
 function startQuiz() {
     // Reset state
     currentQuestionIndex = 0;
@@ -325,7 +335,7 @@ function startQuiz() {
     
     // Handle shuffling
     if (els.shuffleCheckbox.checked) {
-        currentQuestions = [...QUESTIONS].sort(() => Math.random() - 0.5);
+        currentQuestions = shuffleArray([...QUESTIONS]);
     } else {
         currentQuestions = [...QUESTIONS];
     }
@@ -350,15 +360,24 @@ function loadQuestion(index) {
     // Render Choices
     els.choicesContainer.innerHTML = '';
     const choices = question.choices;
+    const fragment = document.createDocumentFragment();
     
     for (const [key, value] of Object.entries(choices)) {
         const btn = document.createElement('button');
         btn.className = 'choice-btn';
         btn.dataset.choice = key;
-        btn.innerHTML = `<span class="choice-label">${key}</span> ${value}`;
+
+        const labelSpan = document.createElement('span');
+        labelSpan.className = 'choice-label';
+        labelSpan.textContent = key;
+
+        btn.appendChild(labelSpan);
+        btn.appendChild(document.createTextNode(` ${value}`));
         btn.onclick = () => selectAnswer(key);
-        els.choicesContainer.appendChild(btn);
+        fragment.appendChild(btn);
     }
+
+    els.choicesContainer.appendChild(fragment);
 
     // Reset UI State for new question
     isAnswered = false;
@@ -464,6 +483,28 @@ function finishQuiz() {
     const percentage = Math.round((score / total) * 100);
     const passed = score >= 25;
 
+    // Compile Attempt Data
+    const attemptData = {
+        score: score,
+        totalQuestions: total,
+        percentage: percentage,
+        passed: passed,
+        wrongAnswers: userAnswers.filter(a => a && !a.isCorrect).map(a => ({
+            questionId: a.question.id,
+            userChoice: a.userChoice,
+            correctAnswer: a.question.answer
+        }))
+    };
+
+    // Send to Backend
+    fetch('/api/record-attempt', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(attemptData)
+    }).catch(err => console.error("Error recording attempt:", err));
+
     // Render Result
     els.scoreText.textContent = `${score}/${total}`;
     els.percentageText.textContent = `${percentage}%`;
@@ -490,20 +531,59 @@ function showReview() {
     const wrongAnswers = userAnswers.filter(a => a && !a.isCorrect);
     
     if (wrongAnswers.length === 0) {
-        els.reviewList.innerHTML = '<p>Perfect score! No wrong answers to review.</p>';
+        const p = document.createElement('p');
+        p.textContent = 'Perfect score! No wrong answers to review.';
+        els.reviewList.appendChild(p);
     } else {
+        const fragment = document.createDocumentFragment();
         wrongAnswers.forEach((item, index) => {
             const div = document.createElement('div');
             div.className = 'review-item';
-            div.innerHTML = `
-                <div class="review-q">Q: ${item.question.q}</div>
-                <div class="review-detail">Your Answer: <span class="review-wrong">${item.userChoice}) ${item.question.choices[item.userChoice]}</span></div>
-                <div class="review-detail">Correct Answer: <span class="review-correct">${item.question.answer}) ${item.question.choices[item.question.answer]}</span></div>
-                <div class="review-explanation"><strong>Explanation:</strong> ${item.question.explanation}</div>
-                <div class="review-explanation"><em><strong>ESL Note:</strong> ${item.question.eslNote}</em></div>
-            `;
-            els.reviewList.appendChild(div);
+
+            const qDiv = document.createElement('div');
+            qDiv.className = 'review-q';
+            qDiv.textContent = `Q: ${item.question.q}`;
+
+            const detailWrongDiv = document.createElement('div');
+            detailWrongDiv.className = 'review-detail';
+            detailWrongDiv.textContent = 'Your Answer: ';
+            const wrongSpan = document.createElement('span');
+            wrongSpan.className = 'review-wrong';
+            wrongSpan.textContent = `${item.userChoice}) ${item.question.choices[item.userChoice]}`;
+            detailWrongDiv.appendChild(wrongSpan);
+
+            const detailCorrectDiv = document.createElement('div');
+            detailCorrectDiv.className = 'review-detail';
+            detailCorrectDiv.textContent = 'Correct Answer: ';
+            const correctSpan = document.createElement('span');
+            correctSpan.className = 'review-correct';
+            correctSpan.textContent = `${item.question.answer}) ${item.question.choices[item.question.answer]}`;
+            detailCorrectDiv.appendChild(correctSpan);
+
+            const explanationDiv = document.createElement('div');
+            explanationDiv.className = 'review-explanation';
+            const strongExp = document.createElement('strong');
+            strongExp.textContent = 'Explanation: ';
+            explanationDiv.appendChild(strongExp);
+            explanationDiv.appendChild(document.createTextNode(item.question.explanation));
+
+            const eslDiv = document.createElement('div');
+            eslDiv.className = 'review-explanation';
+            const emEsl = document.createElement('em');
+            const strongEsl = document.createElement('strong');
+            strongEsl.textContent = 'ESL Note: ';
+            emEsl.appendChild(strongEsl);
+            emEsl.appendChild(document.createTextNode(item.question.eslNote));
+            eslDiv.appendChild(emEsl);
+
+            div.appendChild(qDiv);
+            div.appendChild(detailWrongDiv);
+            div.appendChild(detailCorrectDiv);
+            div.appendChild(explanationDiv);
+            div.appendChild(eslDiv);
+            fragment.appendChild(div);
         });
+        els.reviewList.appendChild(fragment);
     }
     
     showScreen('review');
