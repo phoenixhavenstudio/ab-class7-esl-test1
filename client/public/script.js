@@ -492,6 +492,7 @@ function showReview() {
     if (wrongAnswers.length === 0) {
         els.reviewList.innerHTML = '<p>Perfect score! No wrong answers to review.</p>';
     } else {
+        const fragment = document.createDocumentFragment();
         wrongAnswers.forEach((item, index) => {
             const div = document.createElement('div');
             div.className = 'review-item';
@@ -502,8 +503,9 @@ function showReview() {
                 <div class="review-explanation"><strong>Explanation:</strong> ${item.question.explanation}</div>
                 <div class="review-explanation"><em><strong>ESL Note:</strong> ${item.question.eslNote}</em></div>
             `;
-            els.reviewList.appendChild(div);
+            fragment.appendChild(div);
         });
+        els.reviewList.appendChild(fragment);
     }
     
     showScreen('review');
